@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>Detail Gudang</title>
+</head>
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar(page = 'Gudang')}"></nav>
+  <div class="container">
+    <div class="card m-4 p-0">
+      <div class="card-header">
+        <div class="text-center">
+          <h2>Restock Gudang</h2>
+        </div>
+      </div>
+      <div class="card-body">
+        <form th:action="@{/gudang/{id}/restock-barang(id=${gudang.id})}" th:object="${gudangBarangDTO}" method="POST">
+        <div class="justify-content-center">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                  <td class="card-text">Nama Gudang</td>
+                  <td class="card-text" th:text="': ' + ${gudang.nama}"></td>
+              </tr>
+              <tr>
+                  <td class="card-text">Alamat Gudang</td>
+                  <td class="card-text" th:text="': ' + ${gudang.alamatGudang}"></td>
+              </tr>
+              </tbody>
+          </table>
+            <div class="row">
+              <div class="col-md-6">
+                <h2></h2>
+              </div>
+
+              <div class="col-md-6 text-right py-4">
+                  <button class="btn btn-primary" type="submit" name="addRowRestock">+ Tambah Barang</button>
+              </div>
+            </div>
+
+            <table class="table table-bordered">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th>#</th>
+                        <th>Barang</th>
+                        <th>Kuantitas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="gudangbarang, iterationStatus : *{listBarang}">
+                    <td th:text="${iterationStatus.count}">#</td>
+                    <td>
+                      <select name="sku" th:field="*{listBarang[__${iterationStatus.index}__].barang.sku}" class="form-control">
+                        <div th:each="barangExisting, iterationStatus2 : ${listBarangExisting}">
+                          <option th:value="${barangExisting.sku}" th:text="${barangExisting.merk}"></option>
+                        </div>
+                      </select>
+                      <td>
+                        <input required class="form-control" type="number" th:field="*{listBarang[__${iterationStatus.index}__].stok}" />
+                      </td>
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+            <div class="text-center">
+              <a class="btn btn-danger" href="/">Batal</a> 
+              <button class="btn btn-primary" type="submit">Simpan</button>
+             </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

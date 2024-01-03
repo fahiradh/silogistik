@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>Daftar Barang</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar(page = 'Barang')}"></nav>
+  <div class="container">
+    <div class="text-center pt-5">
+      <h2>Daftar Barang</h2>
+      <div class="text-center m-3">
+        <a type="button" class="btn btn-primary m-2" href="/barang/tambah">+ Tambah Barang</a>
+      </div>
+    <table class="table table-bordered">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th>#</th>
+                <th>SKU</th>
+                <th>Merk</th>
+                <th>Stok</th>
+                <th>Harga</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="barang, iterationStatus: ${listBarangDTO}">
+                <td th:text="${iterationStatus.count}">#</td>
+                <td class="text-primary" th:text="${barang.sku}">SKU</td>
+                <td th:text="${barang.merk}">Merk</td>
+                <td th:text="${barang.stok}">Stok</td>
+                <td th:text="'Rp'+${barang.hargaBarang}">Harga</td>
+                <td>
+                    <a th:href="@{/barang/{sku}(sku=${barang.sku})}" class="btn btn-secondary btn-sm">Detail</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+  </div>
+</body>
+
+</html>

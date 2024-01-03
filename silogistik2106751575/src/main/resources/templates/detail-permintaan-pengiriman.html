@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>Detail Permintaan Pengiriman</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar(page = 'Permintaan')}"></nav>
+  <div class="container">
+    <div class="card m-4 p-0">
+      <div class="card-header">
+        <div class="justify-content-center">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>Detail Permintaan Pengiriman</h2>
+              </div>
+            <div class="col-md-6 text-right">
+              <a th:href="@{/permintaan-pengiriman/{id}/cancel(id=${permintaanPengiriman.id})}"
+              th:classappend="${permintaanPengiriman.isCancelled} ? 'btn btn-danger disabled' : 'btn btn-danger'">
+              Cancel Permintaan
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <span th:if="${permintaanPengiriman.isCancelled}" class="badge badge-danger">Dibatalkan</span>
+              <span th:unless="${permintaanPengiriman.isCancelled}" class="badge badge-success">Aktif</span>
+                <td class="card-text">No. Permintaan Pengiriman</td>
+                <td class="card-text" th:text="': ' + ${permintaanPengiriman.nomorPengiriman}"></td>
+            </tr>
+            <tr>
+                <td class="card-text">Waktu Permintaan</td>
+                <td class="card-text" th:text="': ' + ${#temporals.format(permintaanPengiriman.waktuPermintaan, 'dd-MM-yyyy, HH:mm')}"></td>
+            </tr>
+            <tr>
+                <td class="card-text">Karyawan Bertugas</td>
+                <td class="card-text" th:text="': ' + ${permintaanPengiriman.karyawan.nama}"></td>
+            </tr>
+            <tr>
+              <td class="card-text">Tanggal Pengiriman</td>
+              <td class="card-text" th:text="': ' + ${#temporals.format(permintaanPengiriman.tanggalPengiriman, 'dd-MM-yyyy')}"></td>
+          </tr>
+            <tr>
+                <td class="card-text">Nama Penerima</td>
+                <td class="card-text" th:text="': ' + ${permintaanPengiriman.namaPenerima}"></td>
+            </tr>
+            <tr>
+                <td class="card-text">Alamat Penerima</td>
+                <td class="card-text" th:text="': ' + ${permintaanPengiriman.alamatPenerima}"></td>
+            </tr>
+            <tr>
+                <td class="card-text">Jenis Layanan</td>
+                <td class="card-text" th:text="': ' + ${jenisLayanan}"></td>
+            </tr>
+            <tr>
+                <td class="card-text">Biaya Pengiriman</td>
+                <td class="card-text" th:text="': Rp' + ${permintaanPengiriman.biayaPengiriman}"></td>
+            </tr>
+            <tr>
+                <td class="card-text font-weight-bold">Daftar barang dipesan</td>
+                <table class="table table-bordered">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>#</th>
+                            <th>SKU</th>
+                            <th>Merk</th>
+                            <th>Kuantitas Pesanan</th>
+                            <th>Total Harga</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="permintaan, iterationStatus: ${listPermintaan}">
+                            <td th:text="${iterationStatus.count}">#</td>
+                            <td>
+                              <a th:href="@{/barang/{sku}(sku=${permintaan.sku})}" class="text-primary" th:text="${permintaan.sku}">SKU</a>
+                            </td>
+                            <td th:text="${permintaan.merk}">Merk</td>
+                            <td th:text="${permintaan.kuantitas}">Kuantitas Pesanan</td>
+                            <td th:text="'Rp' + ${permintaan.totalHarga}">Total Harga</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </tr>
+          <tbody>
+          <div class="text-center">
+            <a class="btn btn-secondary" href="/permintaan-pengiriman">Kembali</a> 
+          </div>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>Daftar Permintaan Pengiriman</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar(page = 'Permintaan')}"></nav>
+  <div class="container">
+    <div class="text-center pt-5">
+      <h2>Daftar Permintaan Pengiriman</h2>
+      <div class="text-center m-3">
+        <a type="button" class="btn btn-primary m-2" href="/permintaan-pengiriman/tambah">+ Tambah Permintaan Pengiriman</a>
+      </div>
+    <table class="table table-bordered">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th>#</th>
+                <th>Waktu Permintaan</th>
+                <th>Nomor Pengiriman</th>
+                <th>Nama Penerima</th>
+                <th>Alamat Penerima</th>
+                <th>Tanggal Pengiriman</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="permintaanpengiriman, iterationStatus: ${listPermintaan}">
+                <td th:text="${iterationStatus.count}">#</td>
+                <td th:text="${#temporals.format(permintaanpengiriman.waktuPermintaan, 'dd-MM-yyyy, HH:mm')}">Waktu Permintaan</td>
+                <td th:text="${permintaanpengiriman.nomorPengiriman}">Nomor Pengiriman</td>
+                <td th:text="${permintaanpengiriman.namaPenerima}">Nama Penerima</td>
+                <td th:text="${permintaanpengiriman.alamatPenerima}">Alamat Peenerima</td>
+                <td th:text="${#temporals.format(permintaanpengiriman.tanggalPengiriman, 'dd-MM-yyyy')}">Tanggal Pengiriman</td>
+                <td>
+                    <a th:href="@{/permintaan-pengiriman/{id}(id=${permintaanpengiriman.id})}" class="btn btn-secondary btn-sm">Detail</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+  </div>
+</body>
+
+</html>

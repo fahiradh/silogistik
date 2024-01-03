@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>Detail Barang</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar(page = 'Barang')}"></nav>
+  <div class="container">
+    <div class="card m-4 p-0">
+      <div class="card-header">
+        <div class="justify-content-center">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>Detail Barang</h2>
+              </div>
+            <div class="col-md-6 text-right">
+                <a th:href="@{/barang/{sku}/ubah(sku=${barang.sku})}" class="btn btn-primary">Ubah Barang</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+                <td class="card-text">Merk</td>
+                <td class="card-text" th:text="': ' + ${barang.merk}"></td>
+            </tr>
+            <tr>
+                <td class="card-text">SKU</td>
+                <td class="card-text" th:text="': ' + ${barang.sku}"></td>
+            </tr>
+            <tr>
+                <td class="card-text">Tipe Barang</td>
+                <td class="card-text" th:text="': ' + ${tipeBarang}"></td>
+            </tr>
+            <tr>
+                <td class="card-text">Total Stok</td>
+                <td class="card-text" th:text="': ' + ${barang.stok}"></td>
+            </tr>
+            <tr>
+                <td class="card-text">Harga</td>
+                <td class="card-text" th:text="': Rp' + ${barang.hargaBarang}"></td>
+            </tr>
+            <tr>
+                <td class="card-text font-weight-bold">Daftar gudang</td>
+                <table class="table table-bordered">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>#</th>
+                            <th>Nama Gudang</th>
+                            <th>Alamat Gudang</th>
+                            <th>Stok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="gudangbarang, iterationStatus: ${listGudangBarang}">
+                            <td th:text="${iterationStatus.count}">#</td>
+                            <td>
+                              <a th:href="@{/gudang/{id}(id=${gudangbarang.gudang.id})}" class="text-primary" th:text="${gudangbarang.gudang.nama}">Nama</a>
+                            </td>
+                            <td th:text="${gudangbarang.gudang.alamatGudang}">Alamat Gudang</td>
+                            <td th:text="${gudangbarang.stok}">Stok</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </tr>
+          </tbody>
+          <div class="text-center">
+            <a class="btn btn-secondary" href="/barang">Kembali</a> 
+          </div>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

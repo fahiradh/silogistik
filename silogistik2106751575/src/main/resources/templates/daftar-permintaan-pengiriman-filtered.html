@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>Filter Permintaan Pengiriman</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar(page = 'Bonus')}"></nav>
+  <div class="container">
+    <div class="text-center pt-5">
+      <h2>Filter Permintaan Pengiriman</h2>
+      <br>
+      <form th:action="@{/filter-permintaan-pengiriman}" method="GET">
+        <div class="form-row">
+            <select class="form-control" name="sku">
+                <option th:each="barang : ${listBarangExisting}" th:value="${barang.sku}" th:text="${barang.merk}"></option>
+            </select>
+            <div class="col my-4 ">
+                <input class="form-control" name="start" type="date" />
+            </div>
+              <label class="my-4">hingga</label>
+            
+            <div class="col my-4">
+                <input class="form-control" name="end" type="date" />
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Cari</button>
+      </form>
+    <br><br>
+    <table class="table table-bordered">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th>#</th>
+                <th>Waktu Permintaan</th>
+                <th>Nomor Pengiriman</th>
+                <th>Nama Penerima</th>
+                <th>Alamat Penerima</th>
+                <th>Tanggal Pengiriman</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="permintaan, iterationStatus: ${listPermintaan}">
+                <td th:text="${iterationStatus.count}">#</td>
+                <td th:text="${#temporals.format(permintaan.permintaanPengiriman.waktuPermintaan, 'dd-MM-yyyy, HH:mm')}">Waktu Permintaan</td>
+                <td>
+                  <a class="text-primary" th:text="${permintaan.permintaanPengiriman.nomorPengiriman}" th:href="@{/permintaan-pengiriman/{id}(id=${permintaan.permintaanPengiriman.id})}">Nomor Pengiriman</a>
+                </td>
+                <td th:text="${permintaan.permintaanPengiriman.namaPenerima}">Nama Penerima</td>
+                <td th:text="${permintaan.permintaanPengiriman.alamatPenerima}">Alamat Penerima</td>
+                <td th:text="${#temporals.format(permintaan.permintaanPengiriman.tanggalPengiriman, 'dd-MM-yyyy')}">Tanggal Pengiriman</td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+  </div>
+</body>
+
+</html>
